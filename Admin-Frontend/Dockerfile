@@ -2,13 +2,13 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json pnpm-lock.yaml* ./
 
-RUN npm install
+RUN npm install -g pnpm && pnpm install
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
 FROM nginx:alpine
 

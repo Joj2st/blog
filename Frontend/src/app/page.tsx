@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import ArticleCard from '@/components/ArticleCard';
@@ -9,14 +9,18 @@ import Footer from '@/components/Footer';
 import { articleApi } from '@/lib/api';
 import { ArticleList } from '@/types';
 
-export default function Home() {
+function SearchParamsWrapper() {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('q');
+  return <Home searchQuery={searchQuery} />;
+}
+
+function Home({ searchQuery }: { searchQuery: string | null }) {
   const [articles, setArticles] = useState<ArticleList[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get('q');
   
   const pageSize = 10;
 
@@ -87,7 +91,7 @@ export default function Home() {
             {searchQuery && (
               <div className="max-w-4xl mx-auto mb-6">
                 <p className="text-gray-600 dark:text-gray-400">
-                  搜索 "<span className="font-medium text-indigo-600 dark:text-indigo-400">{searchQuery}</span>" 找到 {total} 篇文章
+                  搜索 '<span className="font-medium text-indigo-600 dark:text-indigo-400">{searchQuery}</span>' 找到 {total} 篇文章
                 </p>
               </div>
             )}
@@ -155,5 +159,13 @@ export default function Home() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchParamsWrapper />
+    </Suspense>
   );
 }

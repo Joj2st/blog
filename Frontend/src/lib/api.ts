@@ -111,11 +111,11 @@ export interface ArticleSearchParams {
 
 export const articleApi = {
   getArticles: async (params: ArticleListParams): Promise<ApiResponse<PaginatedData<ArticleList>>> => {
-    return api.get<ApiResponse<PaginatedData<ArticleList>>>('/articles', { params: params as Record<string, string | number> });
+    return api.get<ApiResponse<PaginatedData<ArticleList>>>('/articles', { params: params as unknown as Record<string, string | number> });
   },
 
   searchArticles: async (params: ArticleSearchParams): Promise<ApiResponse<PaginatedData<ArticleList>>> => {
-    return api.get<ApiResponse<PaginatedData<ArticleList>>>('/articles/search', { params: params as Record<string, string | number> });
+    return api.get<ApiResponse<PaginatedData<ArticleList>>>('/articles/search', { params: params as unknown as Record<string, string | number> });
   },
 
   getArticleById: async (id: number): Promise<ApiResponse<Article>> => {
