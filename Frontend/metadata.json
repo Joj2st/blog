@@ -1,0 +1,5 @@
+{
+  "name": "Enterprise Next.js Template",
+  "description": "A small-to-medium enterprise level general-purpose Next.js template with dashboard, authentication, and UI components.",
+  "requestFramePermissions": []
+}
